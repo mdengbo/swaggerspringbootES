@@ -1,8 +1,19 @@
 server:
   context-path: /
-  port: 80
+  port: 8080
 spring:
   data:
     elasticsearch:
-      cluster-name: elasticsearch #默认即为 elasticsearch
-      cluster-nodes: 120.79.197.130:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      cluster-name: fl-application #默认即为 elasticsearch
+      cluster-nodes: 192.168.1.82:9300
+ #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+    #thymelea模板配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+#热部署文件，页面不产生缓存，及时更新
+    cache: false
+debug: true
+

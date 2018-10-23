@@ -1,34 +1,24 @@
 package com.cun.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.cun.dao.BookDao;
+import com.cun.entity.Book;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
-import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.cun.dao.BookDao;
-import com.cun.entity.Book;
-
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/book")
@@ -44,8 +34,8 @@ public class BookController {
 	 * @return
 	 */
 	@GetMapping("/get/{id}")
-	public Book getBookById(@PathVariable String id) {
-		return bookDao.findOne(id);
+	public Optional<Book> getBookById(@PathVariable String id) {
+		return bookDao.findById(id);
 	}
 
 	/**
@@ -73,7 +63,7 @@ public class BookController {
 	 * @return 
 	 * @return
 	 */
-	@GetMapping("/{page}/{size}/{q}")
+	/*@GetMapping("/{page}/{size}/{q}")
 	public List<Book> searchCity(@PathVariable Integer page, @PathVariable Integer size, @PathVariable String q) {
 
 		// 分页参数
@@ -93,7 +83,7 @@ public class BookController {
 		Page<Book> searchPageResults = bookDao.search(searchQuery);
 		return searchPageResults.getContent();
 
-	}
+	}*/
 
 	/**
 	 * 4、增
@@ -112,9 +102,9 @@ public class BookController {
 	 * @return
 	 */
 	@DeleteMapping("/delete/{id}")
-	public Book insertBook(@PathVariable String id) {
-		Book book = bookDao.findOne(id);
-		bookDao.delete(id);
+	public Optional<Book> insertBook(@PathVariable String id) {
+		Optional<Book> book = bookDao.findById(id);
+		bookDao.deleteById(id);
 		return book;
 	}
 
